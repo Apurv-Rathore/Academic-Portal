@@ -1,1 +1,81 @@
-git push -u origin main
+CREATE TABLE courses (
+course_id varchar(10) not null,
+name varchar(50) not null,
+L integer not null,
+T integer not null,
+P integer not null,
+PRIMARY KEY (id)
+);
+CREATE TABLE instructor (
+instructor_id varchar(255) not null,
+name varchar(50) not null,
+);
+
+
+
+CREATE TABLE taken(
+student_id varchar(10),
+course_offer_id varchar(10) not null,
+FOREIGN KEY (course_offer_id)  
+REFERENCES offered_courses(course_offer_id),
+PRIMARY KEY (student_entry_no, course_offer_id)
+)
+
+
+// Students (student_id, name, cgpa)
+CREATE TABLE student(
+student_id varchar(10) not null,
+name varchar(50) not null,
+CGPA double precision
+);
+
+CREATE TABLE student_transcript(
+	student_id varchar(10) not null,
+	course_id varchar(10),
+	grade integer
+);
+
+CREATE TABLE course_offered_grades(
+	student_id varchar(10) not null,
+	grade integer
+);
+
+
+
+
+
+
+
+
+******************************************************************
+ROLES:
+● Students   =>   
+create ROLE student; 
+● Faculty      =>  
+ create ROLE faculty WITH  CREATE ROLE "Faculty" WITH
+	LOGIN
+	NOSUPERUSER
+NOCREATEDB
+	NOCREATEROLE
+	INHERIT
+	NOREPLICATION
+	CONNECTION LIMIT -1;
+
+● Batch Advisor
+ create ROLE faculty WITH  CREATE ROLE "Batch_Advisor" WITH
+	LOGIN
+	NOSUPERUSER
+NOCREATEDB
+	NOCREATEROLE
+	INHERIT
+	NOREPLICATION
+	CONNECTION LIMIT -1;
+● Dean Academics Office
+ create ROLE faculty WITH  CREATE ROLE "Dean_Academics_Office" WITH
+	LOGIN
+	NOSUPERUSER
+NOCREATEDB
+	NOCREATEROLE
+	INHERIT
+	NOREPLICATION
+	CONNECTION LIMIT -1;
