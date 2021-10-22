@@ -1,4 +1,3 @@
-aman is here.
 CREATE TABLE courses (
 course_id varchar(10) not null,
 name varchar(50) not null,
