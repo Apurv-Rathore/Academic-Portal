@@ -1,32 +1,42 @@
-CREATE TABLE courses (
-course_id varchar(10) not null,
-name varchar(50) not null,
-L integer not null,
-T integer not null,
-P integer not null,
-PRIMARY KEY (id)
+CREATE TABLE course_catalogue (
+	course_id varchar(10) not null,
+	name varchar(50) not null,
+	L integer not null,
+	T integer not null,
+	P integer not null,
+	PRIMARY KEY (id)
 );
+
 CREATE TABLE instructor (
-instructor_id varchar(255) not null,
-name varchar(50) not null,
+	instructor_id varchar(255) not null,
+	name varchar(50) not null,
 );
 
-
+Create table course_offering(
+	offering_id varchar(10) not null,
+	course_id varchar(10) not null,
+	instructor_id varchar(10) not null, 
+	year integer not null,
+	semester integer not null,
+	section_id varchar(10) not null,
+	timeslot  varchar(5) not null,
+	duration integer not null, // interval data type
+	classroom varchar(5) not null,
+	cgpa_requirement double precision, 
+);
 
 CREATE TABLE taken(
-student_id varchar(10),
-course_offer_id varchar(10) not null,
-FOREIGN KEY (course_offer_id)  
-REFERENCES offered_courses(course_offer_id),
-PRIMARY KEY (student_entry_no, course_offer_id)
-)
+	student_id varchar(10),
+	offering_id varchar(10) not null,
+	FOREIGN KEY (offering_id)  
+	REFERENCES course_offering (offering_id),
+	PRIMARY KEY (student_id , offering_id)
+);
 
-
-// Students (student_id, name, cgpa)
 CREATE TABLE student(
-student_id varchar(10) not null,
-name varchar(50) not null,
-CGPA double precision
+	student_id varchar(10) not null,
+	name varchar(50) not null,
+	CGPA double precision
 );
 
 CREATE TABLE student_transcript(
@@ -40,41 +50,29 @@ CREATE TABLE course_offered_grades(
 	grade integer
 );
 
-
-
-
-
-
-
-
-******************************************************************
-ROLES:
-● Students   =>   
 create ROLE student; 
-● Faculty      =>  
- create ROLE faculty WITH  CREATE ROLE "Faculty" WITH
+create ROLE faculty WITH  CREATE ROLE "Faculty" WITH
 	LOGIN
 	NOSUPERUSER
-NOCREATEDB
+	NOCREATEDB
 	NOCREATEROLE
 	INHERIT
 	NOREPLICATION
 	CONNECTION LIMIT -1;
 
-● Batch Advisor
- create ROLE faculty WITH  CREATE ROLE "Batch_Advisor" WITH
+create ROLE faculty WITH  CREATE ROLE "Batch_Advisor" WITH
 	LOGIN
 	NOSUPERUSER
-NOCREATEDB
+	NOCREATEDB
 	NOCREATEROLE
 	INHERIT
 	NOREPLICATION
 	CONNECTION LIMIT -1;
-● Dean Academics Office
- create ROLE faculty WITH  CREATE ROLE "Dean_Academics_Office" WITH
+    
+create ROLE faculty WITH  CREATE ROLE "Dean_Academics_Office" WITH
 	LOGIN
 	NOSUPERUSER
-NOCREATEDB
+	NOCREATEDB
 	NOCREATEROLE
 	INHERIT
 	NOREPLICATION
