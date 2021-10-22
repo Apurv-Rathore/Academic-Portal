@@ -8,26 +8,27 @@ CREATE TABLE course_catalogue (
 );
 	
 CREATE TABLE instructor (
-	instructor_id varchar(255) not null,
+	instructor_id varchar(10) not null,
 	name varchar(50) not null,
+	PRIMARY KEY (instructor_id)
 );
 
 Create table course_offering(
-	offering_id varchar(10) not null,
+	offering_id serial PRIMARY KEY,
 	course_id varchar(10) not null,
 	instructor_id varchar(10) not null, 
 	year integer not null,
 	semester integer not null,
 	section_id varchar(10) not null,
-	timeslot  varchar(5) not null,
+	timeslot  varchar(10) not null,
 	duration integer not null, // interval data type
-	classroom varchar(5) not null,
-	cgpa_requirement double precision, 
+	classroom varchar(10) not null,
+	cgpa_requirement double precision
 );
 
 CREATE TABLE taken(
-	student_id varchar(10),
-	offering_id varchar(10) not null,
+	student_id varchar(10) not null,
+	offering_id integer not null,
 	FOREIGN KEY (offering_id)  
 	REFERENCES course_offering (offering_id),
 	PRIMARY KEY (student_id , offering_id)
