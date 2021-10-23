@@ -77,3 +77,5 @@ create ROLE faculty WITH  CREATE ROLE "Dean_Academics_Office" WITH
 	INHERIT
 	NOREPLICATION
 	CONNECTION LIMIT -1;
+
+-- psql -U apurv  -h 127.0.0.1 -d postgres
