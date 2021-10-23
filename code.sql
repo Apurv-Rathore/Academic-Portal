@@ -4,7 +4,7 @@ CREATE TABLE course_catalogue (
 	L integer not null,
 	T integer not null,
 	P integer not null,
-	PRIMARY KEY (id)
+	PRIMARY KEY (course_id)
 );
 	
 CREATE TABLE instructor (
