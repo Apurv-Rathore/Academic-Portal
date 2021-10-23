@@ -1,5 +1,5 @@
 create ROLE student; 
-create ROLE faculty WITH  CREATE ROLE "Faculty" WITH
+create ROLE faculty WITH
 	LOGIN
 	NOSUPERUSER
 	NOCREATEDB
@@ -8,7 +8,7 @@ create ROLE faculty WITH  CREATE ROLE "Faculty" WITH
 	NOREPLICATION
 	CONNECTION LIMIT -1;
 
-create ROLE faculty WITH  CREATE ROLE "Batch_Advisor" WITH
+create ROLE faculty WITH  
 	LOGIN
 	NOSUPERUSER
 	NOCREATEDB
@@ -17,7 +17,7 @@ create ROLE faculty WITH  CREATE ROLE "Batch_Advisor" WITH
 	NOREPLICATION
 	CONNECTION LIMIT -1;
     
-create ROLE faculty WITH  CREATE ROLE "Dean_Academics_Office" WITH
+create ROLE faculty WITH  
 	LOGIN
 	NOSUPERUSER
 	NOCREATEDB
