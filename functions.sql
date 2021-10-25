@@ -25,5 +25,4 @@ language plpgsql;
 
 
 \copy section_offered_grades FROM 'D:\Semester 5\CS 301 Database\Phase 1\section_offered_grades.csv' delimiter ',' csv header;
-\copy section_offered_grades from '/Users/EDB1/Downloads/usa.csv' delimiter ',' csv header;
 
