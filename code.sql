@@ -36,10 +36,10 @@ Create table time_slots(
 Create table course_offering(
 	offering_id serial PRIMARY KEY,
 	course_id varchar(10) not null,
-	instructor_id varchar(10) not null, 
 	year integer not null,
 	semester integer not null,
 	section_id varchar(10) not null,
+	instructor_id varchar(10) not null, 
 	slot_number integer not null,
 	classroom varchar(10) not null,
 	cgpa_requirement double precision,
@@ -58,19 +58,22 @@ CREATE TABLE taken(
 CREATE TABLE student(
 	student_id varchar(10) not null,
 	name varchar(50) not null,
-	CGPA double precision
+	CGPA double precision,
+  PRIMARY KEY (student_id)
 );
 
 CREATE TABLE student_transcript( -- student_transcript_student_id
-	offering_id integeri,
+	offering_id integer,
 	grade integer,
-  FOREIGN KEY (offering_id) REFERENCES course_offering (offering_id)
+  FOREIGN KEY (offering_id) REFERENCES course_offering (offering_id),
+  PRIMARY KEY (offering_id)
 );
 
 CREATE TABLE section_offered_grades(  -- section_offered_grades_offering id
 	student_id varchar(10) not null,
 	grade integer,
-  FOREIGN KEY (student_id) REFERENCES student(student_id)
+  FOREIGN KEY (student_id) REFERENCES student(student_id),
+  PRIMARY KEY (student_id)
 );
 
 CREATE TABLE instructor_ticket_table(
@@ -87,7 +90,7 @@ CREATE TABLE dean_academics_ticket_table(
 	has_accepted_instructor boolean,
   has_accepted_batch_advisor boolean,
   PRIMARY KEY (offering_id, student_id),
-  FOREIGN KEY (student_id) REFERENCES student(student_id)
+  FOREIGN KEY (student_id) REFERENCES student(student_id),
   FOREIGN KEY (offering_id) REFERENCES course_offering(offering_id)
 );
 
@@ -96,13 +99,14 @@ CREATE TABLE batch_advisor_ticket_table(
 	offering_id integer not null,
   has_accepted_instructor boolean,
   PRIMARY KEY (offering_id, student_id),
-  FOREIGN KEY (student_id) REFERENCES student(student_id)
+  FOREIGN KEY (student_id) REFERENCES student(student_id),
   FOREIGN KEY (offering_id) REFERENCES course_offering(offering_id)
 );
 
 CREATE TABLE student_ticket_table(
   student_id varchar(10) not null,
   offering_id integer not null,
+  has_accepted boolean,
   PRIMARY KEY (offering_id, student_id),
   FOREIGN KEY (student_id) REFERENCES student(student_id),
   FOREIGN KEY (offering_id) REFERENCES course_offering(offering_id)
