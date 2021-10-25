@@ -27,10 +27,14 @@ CREATE TABLE instructor (
   FOREIGN KEY (dept_name)  REFERENCES department(name)
 );
 
-Create table time_slots(
-  slot_number serial PRIMARY KEY,
-  start varchar(10) not null,
-  interval integer not null
+CREATE TABLE time_slots(
+    slot_number serial PRIMARY KEY,
+    duration integer NOT NULL, -- in minutes
+    monday varchar(20) not null,
+    tuesday varchar(20) not null,
+    wednesday varchar(20) not null,
+    thursday varchar(20) not null,
+    friday varchar(20) not null
 );
 
 Create table course_offering(
@@ -110,4 +114,9 @@ CREATE TABLE student_ticket_table(
   PRIMARY KEY (offering_id, student_id),
   FOREIGN KEY (student_id) REFERENCES student(student_id),
   FOREIGN KEY (offering_id) REFERENCES course_offering(offering_id)
+);
+
+CREATE TABLE course_completed(
+  student_id varchar(10) not null,
+  course_id varchar(10) not null
 );
