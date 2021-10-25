@@ -29,12 +29,16 @@ CREATE TABLE instructor (
 
 CREATE TABLE time_slots(
     slot_number serial PRIMARY KEY,
-    duration integer NOT NULL, -- in minutes
-    monday varchar(20) not null,
-    tuesday varchar(20) not null,
-    wednesday varchar(20) not null,
-    thursday varchar(20) not null,
-    friday varchar(20) not null
+    monday_start TIME(HH:MI) not null,
+    monday_end TIME(HH:MI) not null,
+    tuesday_start TIME(HH:MI) not null,
+    tuesday_end TIME(HH:MI) not null,
+    wednesday_start TIME(HH:MI) not null,
+    wednesday_end TIME(HH:MI) not null,
+    thursday_start TIME(HH:MI) not null,
+    thursday_end TIME(HH:MI) not null,
+    friday_start TIME(HH:MI) not null,
+    friday_end TIME(HH:MI) not null
 );
 
 Create table course_offering(
