@@ -4,6 +4,8 @@ CREATE TABLE course_catalogue (
     L integer not null,
     T integer not null,
     P integer not null,
+    S integer not null,
+    C integer not null
     PRIMARY KEY (course_id)
 );
 
