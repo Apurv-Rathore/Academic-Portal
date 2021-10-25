@@ -1,9 +1,9 @@
-CREATE or REPLACE PROCEDURE create_ticket(_student_id varchar(10), _offering_id integer, _has_accepted boolean)
+CREATE or REPLACE PROCEDURE create_ticket(_student_id varchar(10), _offering_id integer)
     AS
     $$
     BEGIN
-        INSERT INTO student_ticket_table(student_id, offering_id, has_accepted)
-        VALUES (_student_id, _offering_id, _has_accepted);
+        INSERT INTO student_ticket_table(student_id, offering_id)
+        VALUES (_student_id, _offering_id);
         INSERT INTO instructor_ticket_table(student_id, offering_id)
         VALUES (_student_id, _offering_id);
     END;
@@ -55,6 +55,18 @@ CREATE or REPLACE PROCEDURE update_ticket_dean_academics(_student_id varchar(10)
     END;
     $$
     LANGUAGE plpgsql;
+
+-- call create_ticket('2', 4, false);
+-- call create_ticket('3', 2, false);
+
+-- call update_ticket_instructor('2', 4, true);
+-- call update_ticket_instructor('3', 2, false);
+
+-- call update_ticket_batch_advisor('2', 4, false);
+-- call update_ticket_batch_advisor('3', 2, true);
+
+-- call update_ticket_dean_academics('2', 4, false);
+-- call update_ticket_dean_academics('3', 2, true);
 
 
 CREATE or REPLACE PROCEDURE get_CGPA(
