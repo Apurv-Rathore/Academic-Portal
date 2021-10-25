@@ -22,7 +22,7 @@ CREATE TABLE department(
 CREATE TABLE instructor (
 	instructor_id varchar(10) not null,
 	name varchar(50) not null,
-  dept_name varchar(20),
+    dept_name varchar(20),
 	PRIMARY KEY (instructor_id),
   FOREIGN KEY (dept_name)  REFERENCES department(name)
 );
@@ -40,9 +40,9 @@ Create table course_offering(
 	year integer not null,
 	semester integer not null,
 	section_id varchar(10) not null,
-	slot_number integer not null,
 	classroom varchar(10) not null,
 	cgpa_requirement double precision,
+	slot_number integer not null,
   FOREIGN KEY (instructor_id) REFERENCES instructor(instructor_id),
   FOREIGN KEY (course_id) REFERENCES course_catalogue(course_id),
   FOREIGN KEY (slot_number) REFERENCES time_slots(slot_number)
