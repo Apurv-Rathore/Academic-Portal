@@ -4,18 +4,21 @@ CREATE TABLE course_catalogue (
 	L integer not null,
 	T integer not null,
 	P integer not null,
+	S integer not null,
+	C integer not null,
 	PRIMARY KEY (course_id)
 );
 
+
 CREATE TABLE prerequisites (
-	course_id varchar(10) not null,
+  course_id varchar(10) not null,
   prerequisite_course_id varchar(10) not null,
   FOREIGN KEY (course_id)  REFERENCES course_catalogue(course_id),
   FOREIGN KEY (prerequisite_course_id)  REFERENCES course_catalogue(course_id)
 );
 
 CREATE TABLE department(
-  name varchar(10),
+  dept_name varchar(10),
   PRIMARY KEY (name)
 );
 
@@ -24,28 +27,28 @@ CREATE TABLE instructor (
 	name varchar(50) not null,
     dept_name varchar(20),
 	PRIMARY KEY (instructor_id),
-  FOREIGN KEY (dept_name)  REFERENCES department(name)
+    FOREIGN KEY (dept_name)  REFERENCES department(name)
 );
 
-Create table time_slots(
-  slot_number serial PRIMARY KEY,
-  start varchar(10) not null,
-  interval integer not null
+CREATE TABLE time_slots(
+    slot_number serial PRIMARY KEY,
+	start_time  Time[5],
+	end_time  Time[5]
 );
 
 Create table course_offering(
 	offering_id serial PRIMARY KEY,
 	course_id varchar(10) not null,
-	instructor_id varchar(10) not null, 
 	year integer not null,
 	semester integer not null,
 	section_id varchar(10) not null,
+	instructor_id varchar(10) not null, 
+	slot_number integer not null,
 	classroom varchar(10) not null,
 	cgpa_requirement double precision,
-	slot_number integer not null,
-  FOREIGN KEY (instructor_id) REFERENCES instructor(instructor_id),
-  FOREIGN KEY (course_id) REFERENCES course_catalogue(course_id),
-  FOREIGN KEY (slot_number) REFERENCES time_slots(slot_number)
+	FOREIGN KEY (instructor_id) REFERENCES instructor(instructor_id),
+	FOREIGN KEY (course_id) REFERENCES course_catalogue(course_id),
+	FOREIGN KEY (slot_number) REFERENCES time_slots(slot_number)
 );
 
 CREATE TABLE taken(
@@ -59,19 +62,24 @@ CREATE TABLE student(
 	student_id varchar(10) not null,
 	name varchar(50) not null,
 	CGPA double precision,
-	PRIMARY KEY (student_id)
+	batch_year integer not null,
+	credit1 double precision not null,
+	credit2 double precision not null,
+  	PRIMARY KEY (student_id)
 );
 
 CREATE TABLE student_transcript( 
 	offering_id integer,
 	grade integer,
-  FOREIGN KEY (offering_id) REFERENCES course_offering (offering_id)
+	FOREIGN KEY (offering_id) REFERENCES course_offering (offering_id),
+	PRIMARY KEY (offering_id)
 );
 
-CREATE TABLE section_offered_grades(  
+CREATE TABLE section_grades(  -- section_offered_grades_offering id
 	student_id varchar(10) not null,
 	grade integer,
-  FOREIGN KEY (student_id) REFERENCES student(student_id)
+	FOREIGN KEY (student_id) REFERENCES student(student_id),
+	PRIMARY KEY (student_id)
 );
 
 CREATE TABLE instructor_ticket_table(
@@ -104,7 +112,17 @@ CREATE TABLE batch_advisor_ticket_table(
 CREATE TABLE student_ticket_table(
   student_id varchar(10) not null,
   offering_id integer not null,
+  has_accepted boolean,
   PRIMARY KEY (offering_id, student_id),
   FOREIGN KEY (student_id) REFERENCES student(student_id),
   FOREIGN KEY (offering_id) REFERENCES course_offering(offering_id)
+);
+
+CREATE TABLE course_completed(
+  student_id varchar(10) not null,
+  offering_id varchar(10) not null,
+  PRIMARY KEY (offering_id, student_id),
+  FOREIGN KEY (student_id) REFERENCES student(student_id),
+  FOREIGN KEY (offering_id) REFERENCES course_offering(offering_id)
+
 );

@@ -13,7 +13,6 @@ begin
     into variable_name 
     from time_slots
     where time_slots.start = start_time AND time_slots.interval = intervall;
-
     INSERT INTO course_offering(
         course_id, instructor_id, year, semester, section_id, slot_number, classroom, cgpa_requirement
     )
