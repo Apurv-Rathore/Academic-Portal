@@ -3,3 +3,8 @@ insert into department(name) values ('cse');
 insert into instructor(instructor_id,name,dept_name) VALUES ('1','puneet','cse');
 insert into course_catalogue(course_id, name, l,t,p) values ('1','dsa',4,5,6);
 select offer_course(10,'10',60,'1','1',2021,1,'1','1',10);
+
+
+insert into student(student_id, name, cgpa) values ('1','apurv',10);
+insert into student(student_id, name, cgpa) values ('2','jaglike',1);
+insert into student(student_id, name, cgpa) values ('3','aman',2);
