@@ -131,3 +131,12 @@ CREATE TABLE course_completed(
     student_id varchar(10) not null,
     course_id varchar(10) not null
 );
+
+CREATE TABLE allowed_batches_for_offering(
+    offering_id integer not null,
+	batch integer not null,
+	PRIMARY KEY(offering_id, batch)	,
+	FOREIGN KEY (offering_id) REFERENCES course_offering(offering_id)
+);
+
+
