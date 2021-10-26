@@ -91,3 +91,8 @@ CREATE or REPLACE PROCEDURE get_CGPA(
     END
     $$
     LANGUAGE plpgsql;
+
+
+
+
+\copy section_offered_grades FROM 'D:\Semester 5\CS 301 Database\Phase 1\section_offered_grades.csv' delimiter ',' csv header;
