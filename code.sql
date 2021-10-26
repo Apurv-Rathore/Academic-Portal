@@ -61,8 +61,8 @@ CREATE TABLE student(
     name varchar(50) not null,
     dept_name varchar(10) not null,
     CGPA double precision,
-    credit1 double precision not null,
-    credit2 double precision not null,
+    credit1 double precision,
+    credit2 double precision,
     batch integer not null,
     PRIMARY KEY (student_id)
 );
