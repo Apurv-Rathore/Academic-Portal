@@ -48,8 +48,8 @@ values ('CS517', 2021, 1, 1, '4', 1, 'CS2');
 
 
 insert into student(student_id, name, dept_name,batch) values ('1', 'Jaglike Makkar', 'CSE',2019);
-insert into student(student_id, name, dept_name) values ('2', 'Apurv Rathore', 'CSE');
-insert into student(student_id, name, dept_name) values ('3', 'Aman Chourasiya', 'CSE');
+insert into student(student_id, name, dept_name) values ('2', 'Apurv Rathore', 'CSE',2019);
+insert into student(student_id, name, dept_name) values ('3', 'Aman Chourasiya', 'CSE',2019);
 
 insert into taken(student_id, offering_id) values ('1', 2);
 insert into taken(student_id, offering_id) values ('1', 3);
