@@ -67,14 +67,6 @@ CREATE TABLE student(
     PRIMARY KEY (student_id)
 );
 
-CREATE TABLE taken(
-    student_id varchar(10) not null,
-    offering_id integer not null,
-    FOREIGN KEY (offering_id) REFERENCES course_offering (offering_id),
-    FOREIGN KEY (student_id) REFERENCES student(student_id),
-    PRIMARY KEY (student_id, offering_id)
-);
-
 CREATE TABLE student_transcript(
     -- student_transcript_student_id
     offering_id integer,
