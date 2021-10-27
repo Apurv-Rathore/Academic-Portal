@@ -47,7 +47,7 @@ insert into course_offering(course_id, year, semester, section_id, instructor_id
 values ('CS517', 2021, 1, 1, '4', 1, 'CS2');
 
 
-insert into student(student_id, name, dept_name) values ('1', 'Jaglike Makkar', 'CSE');
+insert into student(student_id, name, dept_name,batch) values ('1', 'Jaglike Makkar', 'CSE',2019);
 insert into student(student_id, name, dept_name) values ('2', 'Apurv Rathore', 'CSE');
 insert into student(student_id, name, dept_name) values ('3', 'Aman Chourasiya', 'CSE');
 
