@@ -33,3 +33,4 @@ GRANT SELECT ON instructor to faculty;
 GRANT SELECT, INSERT, UPDATE ON time_slots to faculty;
 GRANT SELECT, INSERT, UPDATE ON course_offering to faculty;
 GRANT SELECT ON instructor_ticket_table to faculty;
+
