@@ -74,6 +74,7 @@ CREATE TABLE course_offering_instid(
     section_id varchar(20) not null,
     slot_number integer not null,
     cgpa_requirement double precision,
+    allowed_batches integer[] not null,
     PRIMARY KEY (year, semester, section_id, course_id),
     FOREIGN KEY (course_id) REFERENCES course_catalogue(course_id),
     FOREIGN KEY (slot_number) REFERENCES time_slots(slot_number)
@@ -81,9 +82,12 @@ CREATE TABLE course_offering_instid(
 
 CREATE TABLE student_transcript(
     -- student_transcript_student_id
-    course_id integer,
+    course_id varchar(20) not null,
+    year integer not null,
+    semester integer not null,
+    section_id varchar(20) not null,
     grade integer,
-    PRIMARY KEY (course_id)
+    PRIMARY KEY (year, semester, section_id, course_id),
 );
 
 CREATE TABLE section_offered_grades(
