@@ -43,20 +43,20 @@ CREATE TABLE time_slots(
     friday_end TIME 
 );
 
--- Create table course_offering(
---     offering_id serial PRIMARY KEY,
---     course_id varchar(20) not null,
---     year integer not null,
---     semester integer not null,
---     section_id varchar(20) not null,
---     instructor_id varchar(20) not null,
---     slot_number integer not null,
---     cgpa_requirement double precision,
---     FOREIGN KEY (instructor_id) REFERENCES instructor(instructor_id),
---     FOREIGN KEY (course_id) REFERENCES course_catalogue(course_id),
---     FOREIGN KEY (slot_number) REFERENCES time_slots(slot_number)
---     -- PRIMARY KEY at top
--- );
+Create table course_offering(
+    offering_id serial PRIMARY KEY,
+    course_id varchar(20) not null,
+    year integer not null,
+    semester integer not null,
+    section_id varchar(20) not null,
+    instructor_id varchar(20) not null,
+    slot_number integer not null,
+    cgpa_requirement double precision,
+    FOREIGN KEY (instructor_id) REFERENCES instructor(instructor_id),
+    FOREIGN KEY (course_id) REFERENCES course_catalogue(course_id),
+    FOREIGN KEY (slot_number) REFERENCES time_slots(slot_number)
+    -- PRIMARY KEY at top
+);
 
 CREATE TABLE student(
     student_id varchar(20) not null,
