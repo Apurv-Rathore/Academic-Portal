@@ -97,7 +97,6 @@ create or replace function offer_course(cgpa_constraint_inp double precision, co
 year_inp integer,
 semester_inp integer,
 section_id_inp varchar(10),
-classroom_inp varchar(10),
 allowed_batches INT[],
 time_slots_avaiable TIME[]) RETURNS INTEGER
 AS
@@ -154,9 +153,9 @@ begin
     raise notice 'Value: %', variable_name;
 
     INSERT INTO course_offering(
-        course_id, instructor_id, year, semester, section_id, slot_number, classroom, cgpa_requirement
+        course_id, instructor_id, year, semester, section_id, slot_number, cgpa_requirement
     )
-    VALUES (course_idd, instructor_idd, year_inp, semester_inp, section_id_inp, variable_name.slot_number, classroom_inp, cgpa_constraint_inp);
+    VALUES (course_idd, instructor_idd, year_inp, semester_inp, section_id_inp, variable_name.slot_number, cgpa_constraint_inp);
 
     select course_offering.offering_id 
     into offering_id_record 
@@ -168,7 +167,6 @@ begin
     course_offering.semester = semester_inp AND 
     course_offering.section_id = section_id_inp AND 
     course_offering.slot_number = variable_name.slot_number AND 
-    course_offering.classroom = classroom_inp AND 
     course_offering.cgpa_requirement = cgpa_constraint_inp;
 
     offering_id := offering_id_record.offering_id;
