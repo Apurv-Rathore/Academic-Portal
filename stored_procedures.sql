@@ -181,8 +181,23 @@ end;
 $$
 language plpgsql;
 
+
+create or replace PROCEDURE delete_course_offering(_offering_id integer)
+AS
+$$
+begin
+    DELETE FROM course_offering
+    WHERE offering_id = _offering_id;
+end;
+$$
+language plpgsql;
+
+
+
 -- to run :::  select offer_course(10,'HS202','1',2019,1,'1','1', ARRAY [2019], '{"01:00:00", "01:50:00", "01:00:00", "01:50:00", "01:00:00", "01:50:00", "01:00:00", "01:50:00", "01:00:00", "01:50:00"}'::TIME[] );
 select offer_course(1,'NS103','1',2019,1,'1', ARRAY [2019,20120,2021], '{"01:00:00", "01:50:00", "01:00:00", "01:50:00", "01:00:00", "01:50:00", "01:00:00", "01:50:00", "01:00:00", "01:50:00"}'::TIME[] );
+
+CALL delete_course_offering(1);
 
 
 \copy section_offered_grades FROM 'D:\Semester 5\CS 301 Database\Phase 1\section_offered_grades.csv' delimiter ',' csv header;
