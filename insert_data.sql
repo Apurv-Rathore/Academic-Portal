@@ -37,16 +37,18 @@ values ('03:00:00', '03:50:00', '03:00:00', '03:50:00', '03:00:00', '03:50:00', 
 insert into time_slots(monday_start, monday_end, tuesday_start, tuesday_end, wednesday_start, wednesday_end, thursday_start, thursday_end, friday_start, friday_end)
 values ('04:00:00', '04:50:00', '04:00:00', '04:50:00', '04:00:00', '04:50:00', '04:00:00', '04:50:00', '04:00:00', '04:50:00');
 
-insert into course_offering(course_id, year, semester, section_id, instructor_id, slot_number, cgpa_requirement)
-values ('CS303', 2021, 1, 1, '2', 1, 6.0);
-insert into course_offering(course_id, year, semester, section_id, instructor_id, slot_number, cgpa_requirement)
-values ('CS302', 2021, 1, 1, '3', 1, 7.0);
-insert into course_offering(course_id, year, semester, section_id, instructor_id, slot_number)
-values ('CS301', 2021, 1, 1, '1', 1);
-insert into course_offering(course_id, year, semester, section_id, instructor_id, slot_number)
-values ('CS517', 2021, 1, 1, '4', 1);
+insert into course_offering(course_id, year, semester, section_id, instructor_id, slot_number, cgpa_requirement, allowed_batches)
+values ('CS303', 2021, 1, 1, '2', 1, 6.0, ARRAY[2018, 2019, 2020]);
+insert into course_offering(course_id, year, semester, section_id, instructor_id, slot_number, cgpa_requirement, allowed_batches)
+values ('CS302', 2021, 1, 1, '3', 1, 7.0, ARRAY[2018, 2019, 2020]);
+insert into course_offering(course_id, year, semester, section_id, instructor_id, slot_number, allowed_batches)
+values ('CS301', 2021, 1, 1, '1', 1, ARRAY[2018, 2019, 2020]);
+insert into course_offering(course_id, year, semester, section_id, instructor_id, slot_number, allowed_batches)
+values ('CS517', 2021, 1, 1, '4', 1, ARRAY[2018, 2019, 2020]);
 
 
 insert into student(student_id, name, dept_name,batch) values ('1', 'Jaglike Makkar', 'CSE',2019);
 insert into student(student_id, name, dept_name,batch) values ('2', 'Apurv Rathore', 'CSE',2019);
 insert into student(student_id, name, dept_name,batch) values ('3', 'Aman Chourasiya', 'CSE',2019);
+
+
