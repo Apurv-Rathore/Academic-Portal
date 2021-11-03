@@ -31,20 +31,29 @@ CREATE TABLE instructor (
 
 CREATE TABLE time_slots(
     slot_number serial PRIMARY KEY,
-    monday_start TIME ,
-    monday_end TIME ,
-    tuesday_start TIME ,
-    tuesday_end TIME ,
-    wednesday_start TIME ,
-    wednesday_end TIME ,
-    thursday_start TIME ,
-    thursday_end TIME ,
-    friday_start TIME ,
-    friday_end TIME 
+    monday_start TIME,
+    monday_end TIME,
+    tuesday_start TIME,
+    tuesday_end TIME,
+    wednesday_start TIME,
+    wednesday_end TIME,
+    thursday_start TIME,
+    thursday_end TIME,
+    friday_start TIME,
+    friday_end TIME
 );
 
-Create table course_offering(
-    offering_id serial PRIMARY KEY,
+CREATE TABLE student(
+    student_id varchar(20) not null,
+    name varchar(50) not null,
+    dept_name varchar(20) not null,
+    batch integer not null,
+    PRIMARY KEY (student_id),
+    FOREIGN KEY (dept_name) REFERENCES department(name)
+);
+
+CREATE TABLE course_offering(
+    offering_id SERIAL PRIMARY KEY,
     course_id varchar(20) not null,
     year integer not null,
     semester integer not null,
@@ -52,108 +61,105 @@ Create table course_offering(
     instructor_id varchar(20) not null,
     slot_number integer not null,
     cgpa_requirement double precision,
-    FOREIGN KEY (instructor_id) REFERENCES instructor(instructor_id),
-    FOREIGN KEY (course_id) REFERENCES course_catalogue(course_id),
-    FOREIGN KEY (slot_number) REFERENCES time_slots(slot_number)
-    -- PRIMARY KEY at top
-);
-
-CREATE TABLE student(
-    student_id varchar(20) not null,
-    name varchar(50) not null,
-    dept_name varchar(20) not null,
-    CGPA double precision,
-    credit1 double precision,
-    credit2 double precision,
-    batch integer not null,
-    PRIMARY KEY (student_id),
-    FOREIGN KEY (dept_name) REFERENCES department(name)
-);
-
--- dynamicly created
-CREATE TABLE course_offering_inst_id(
-    course_id varchar(20) not null,
-    year integer not null,
-    semester integer not null,
-    section_id varchar(20) not null,
-    slot_number integer not null,
-    cgpa_requirement double precision,
-    allowed_batches integer[] not null,
+    allowed_batches integer [] not null,
     PRIMARY KEY (course_id, year, semester, section_id),
     FOREIGN KEY (course_id) REFERENCES course_catalogue(course_id),
     FOREIGN KEY (slot_number) REFERENCES time_slots(slot_number)
 );
 
-CREATE TABLE student_transcript_student_id(
-    -- student_transcript_student_id
+CREATE TABLE course_offering_year_semester(
+    offering_id PRIMARY KEY,
     course_id varchar(20) not null,
-    year integer not null,
-    semester integer not null,
     section_id varchar(20) not null,
-    grade integer,
-    PRIMARY KEY (year, semester, section_id, course_id),
+    instructor_id varchar(20) not null,
+    cgpa_requirement double precision,
+    allowed_batches integer [] not null,
+    PRIMARY KEY (course_id, year, semester, section_id),
 );
 
-CREATE TABLE course_year_sem_sec_grades(
-    -- section_offered_grades_offering id
+CREATE TABLE student_transcript_student_id(
+    offering_id integer not null,
+    year integer not null,
+    semester integer not null,
+    grade integer,
+    PRIMARY KEY (year, semester, section_id, course_id)
+);
+
+CREATE TABLE course_offering_grades_offering_id(
     student_id varchar(20) not null,
     grade integer,
-    FOREIGN KEY (student_id) REFERENCES student(student_id),
+    offering_id varchar(20) not null FOREIGN KEY (student_id) REFERENCES student(student_id),
     PRIMARY KEY (student_id)
+);
+
+CREATE TABLE student_ticket_table_student_id(
+    offering_id integer not null,
+    is_accepted boolean,
+    recognized_by_instructor not null default false,
+    PRIMARY KEY (offering_id),
+    FOREIGN KEY (student_id) REFERENCES student(student_id),
+    FOREIGN KEY (offering_id) REFERENCES course_offering(offering_id)
 );
 
 CREATE TABLE instructor_ticket_table_inst_id(
     student_id varchar(20) not null,
-    course_id varchar(20) not null,
-    year integer not null,
-    semester integer not null,
-    section_id varchar(20) not null,
-    PRIMARY KEY (student_id, course_id, year, semester, section_id),
-    FOREIGN KEY (student_id) REFERENCES student(student_id),
-    FOREIGN KEY (course_id) REFERENCES course_catalogue(course_id)
-);
-
-CREATE TABLE dean_academics_ticket_table(
-    year integer not null,
-    semester integer not null,
-    section_id varchar(20) not null,
-    course_id varchar(20) not null, 
-    student_id varchar(20) not null,
+    offering_id integer not null,
     has_accepted_instructor boolean,
-    has_accepted_batch_advisor boolean,
-    PRIMARY KEY (year, semester, section_id, course_id, student_id),
+    recognized_by_batch_advisor boolean not null default false,
+    PRIMARY KEY (student_id, offering_id),
     FOREIGN KEY (student_id) REFERENCES student(student_id),
-    FOREIGN KEY (course_id) REFERENCES course_catalogue(course_id)
+    FOREIGN KEY (offering_id) REFERENCES course_offering(offering_id)
 );
 
 CREATE TABLE batch_advisor_ticket_table(
     student_id varchar(20) not null,
-    year integer not null,
-    semester integer not null,
-    section_id varchar(20) not null,
-    course_id varchar(20) not null, 
+    offering_id integer not null,
+    recognized_by_dean not null default false,
     has_accepted_instructor boolean,
-    PRIMARY KEY (year, semester, section_id, course_id, student_id),
+    has_accepted_batch_advisor boolean,
+    PRIMARY KEY (student_id, offering_id),
     FOREIGN KEY (student_id) REFERENCES student(student_id),
-    FOREIGN KEY (course_id) REFERENCES course_catalogue(course_id)
+    FOREIGN KEY (offering_id) REFERENCES course_offering(offering_id)
 );
 
-CREATE TABLE student_ticket_table_student_id(
+CREATE TABLE dean_academics_ticket_table(
+    offering_id integer not null,
     student_id varchar(20) not null,
-    year integer not null,
-    semester integer not null,
-    section_id varchar(20) not null,
-    course_id varchar(20) not null, 
-    has_accepted boolean,
-    PRIMARY KEY (year, semester, section_id, course_id, student_id),
+    has_accepted_instructor boolean,
+    has_accepted_batch_advisor boolean,
+    has_accepted_dean boolean,
+    PRIMARY KEY (student_id, offering_id),
     FOREIGN KEY (student_id) REFERENCES student(student_id),
-    FOREIGN KEY (course_id) REFERENCES course_catalogue(course_id)
 );
 
-CREATE TABLE course_completed(
-    student_id varchar(20) not null,
+CREATE TABLE program_cores_batch_number(
     course_id varchar(20) not null,
-    year integer not null,
-    semester integer not null,
-    section_id integer not null
+    department varchar(20) not null,
+    PRIMARY_KEY(course_id) REFERENCES course_catalogue(course_id)
+);
+
+CREATE TABLE open_elective_batch_number(
+    course_id varchar(20) not null,
+    department varchar(20) not null,
+    PRIMARY_KEY(course_id) REFERENCES course_catalogue(course_id)
+);
+
+CREATE TABLE program_elective_batch_number(
+    course_id varchar(20) not null,
+    department varchar(20) not null,
+    PRIMARY_KEY(course_id) REFERENCES course_catalogue(course_id)
+);
+
+CREATE TABLE sciece_core_batch_number(
+    course_id varchar(20) not null,
+    department varchar(20) not null,
+    PRIMARY_KEY(course_id) REFERENCES course_catalogue(course_id)
+);
+
+CREATE TABLE credit_requirement_to_graduate(
+    batch integer not null,
+    program_core_credit double precision not null,
+    science_core_credit double precision not null,
+    open_elective_credit double precision not null,
+    program_elective_credit double precision not null
 );
