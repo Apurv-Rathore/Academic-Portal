@@ -1,3 +1,27 @@
+CREATE or REPLACE PROCEDURE get_CGPA(
+    IN student_id varchar(10),
+    INOUT CGPA double precision)
+    AS
+    $$
+    DECLARE
+        tablename varchar(200);
+        query_tcredits varchar;
+        query_tgrades varchar;
+        total_credits integer;
+        total_grades integer;
+    BEGIN
+        -- ########### UPDATE THIS ########### 
+        SELECT CONCAT('student_transcript_', student_id) into tablename;
+        query_tcredits = CONCAT('select sum(credits) from ', tablename, ' where grade > 4');
+        query_tgrades = CONCAT('select sum(credits*grade) from ', tablename , ' where grade > 4');
+        execute query_tcredits into total_credits;
+        execute query_tgrades into total_grades;
+        CGPA = round(total_grades/total_credits, 2);
+        raise notice 'Value of cgpa: %', CGPA;
+    END
+    $$
+LANGUAGE plpgsql SECURITY DEFINER;
+
 create or replace function count_credits(
     my_student_id varchar(10),
     curr_year integer,
@@ -190,6 +214,8 @@ declare
     query_past_courses text;
     past_credits double precision;
     course_name_check varchar(20);
+    get_cgpa double precision;
+    required_cgpa double precision;
 begin
 
     -- check if already registered
@@ -310,11 +336,17 @@ begin
     -- checking credit limit
     past_credits := 1.25 * count_credits(my_student_id, curr_year, curr_semester);
     
+    -- get CGPA requirement
+    call get_CGPA(my_student_id, get_cgpa);
+    select cgpa_requirement into required_cgpa
+    from course_offering
+    where offering_id = course_offering_id;
+
+    if required_cgpa > get_cgpa then
+        raise notice 'CGPA Criteria not satisfied.';
+        return;
+    end if;
     insert into register_student_requests(offering_id,student_id) values (course_offering_id, my_student_id);
     raise notice 'Request for registration sent to the dean. Pending Approval.';
 end
 $$;
-
--- call register_student('1', 'CS303', 2021, 1, '1');
-
-\copy time_slots FROM '/home/captain/Academic-Portal/time_slots.csv' delimiter ',' csv header;
