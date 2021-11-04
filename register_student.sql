@@ -8,7 +8,7 @@ create or replace function count_credits(
     curr_year integer,
     curr_semester integer
 )
-returns double
+returns double precision
 language plpgsql
 as
 $$
@@ -24,34 +24,34 @@ declare
     second_sem boolean := true;
 begin
     if curr_semester = 2 then
-        s2 = 1
-        s1 = 2
-        y2 = curr_year
-        y1 = curr_year - 1
+        s2 = 1;
+        s1 = 2;
+        y2 = curr_year;
+        y1 = curr_year - 1;
     else
-        s2 = 2
-        s1 = 1
-        y2 = curr_year - 1
-        y1 = curr_year - 1
-    end if
-    queryx := 'select * from student_transcript_' || my_student_id
+        s2 = 2;
+        s1 = 1;
+        y2 = curr_year - 1;
+        y1 = curr_year - 1;
+    end if;
+    queryx := 'select * from student_transcript_' || my_student_id;
     for i in execute queryx
     loop
         if (i.year = y1 and i.semester = s1) or (i.year = y2 and i.semester = s2) then
             credits := credits + i.credits;
         end if;
         if i.year = y1 and i.semester = s1 then
-            first_sem = false
+            first_sem = false;
         end if;
         if i.year = y2 and i.semester = s2 then
-            second_sem = false
+            second_sem = false;
         end if;
     end loop;
     if first_sem or second_sem then
         return 24;
     end if;
     return credits;
-end
+end;
 $$;
 
 create or replace function clash_decision(
@@ -74,12 +74,14 @@ begin
 end
 $$; 
 
+
+
 create or replace function offering_id_to_course_id(
     given_year integer,
     given_semester integer,
     given_offering_id integer
 )
-return varchar(20)
+returns varchar(20)
 language plpgsql
 as
 $$
@@ -105,6 +107,8 @@ begin
 end
 $$;
 
+
+
 create or replace procedure transcript_generate(
     my_student_id varchar(10)
 )
@@ -126,7 +130,7 @@ begin
 end
 $$;
 
-create or replace insert_record_student_transcript(
+create or replace procedure insert_record_student_transcript(
     request_student_id varchar(20),
     request_offering_id integer,
     decision boolean
@@ -135,15 +139,15 @@ language plpgsql
 as
 $$
 declare
-    course_year integer,
-    course_semester integer
+    course_year integer;
+    course_semester integer;
 begin
     select year, semester into course_year, course_semester
     from course_offering
-    where offering_id = request_offering_id
+    where offering_id = request_offering_id;
 
     if decision then
-        delete from register_student_requests where student_id = request_student_id and offering_id = request_offering_id
+        delete from register_student_requests where student_id = request_student_id and offering_id = request_offering_id;
         EXECUTE 'INSERT INTO student_transcript_' || request_student_id || '(offering_id, year, semester, grade) VALUES('|| request_offering_id ||', '|| course_year ||', '|| course_semester ||', ' null ')';
     else
         delete from register_student_requests where student_id = request_student_id and offering_id = request_offering_id;
@@ -300,6 +304,8 @@ begin
     raise notice 'Request for registration sent to the dean. Pending Approval.';
 end
 $$;
+
+call register_student('4', '1', 2020, 1, '1');
 
 \copy time_slots FROM '/home/captain/Academic-Portal/time_slots.csv' delimiter ',' csv header;
 
