@@ -66,16 +66,6 @@ CREATE TABLE course_offering(
     FOREIGN KEY (slot_number) REFERENCES time_slots(slot_number)
 );
 
-CREATE TABLE course_offering_year_semester(
-    offering_id integer not null,
-    course_id varchar(20) not null,
-    section_id varchar(20) not null,
-    instructor_id varchar(20) not null,
-    cgpa_requirement double precision,
-    allowed_batches integer [] not null,
-    PRIMARY KEY (offering_id)
-);
-
 CREATE TABLE student_transcript_student_id(
     offering_id integer not null,
     year integer not null,
@@ -138,27 +128,31 @@ CREATE TABLE dean_academics_ticket_table(
     FOREIGN KEY (student_id) REFERENCES student(student_id)
 );
 
-CREATE TABLE program_cores_batch_number(
+CREATE TABLE program_cores(
     course_id varchar(20) not null,
     department varchar(20) not null,
+    batch integer,
     PRIMARY KEY(course_id)
 );
 
-CREATE TABLE open_elective_batch_number(
+CREATE TABLE open_elective(
     course_id varchar(20) not null,
     department varchar(20) not null,
+    batch integer,
     PRIMARY KEY(course_id)
 );
 
-CREATE TABLE program_elective_batch_number(
+CREATE TABLE program_elective(
     course_id varchar(20) not null,
     department varchar(20) not null,
+    batch integer,
     PRIMARY KEY(course_id)
 );
 
-CREATE TABLE sciece_core_batch_number(
+CREATE TABLE science_core(
     course_id varchar(20) not null,
     department varchar(20) not null,
+    batch integer,
     PRIMARY KEY(course_id)
 );
 
