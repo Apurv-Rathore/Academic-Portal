@@ -1,8 +1,3 @@
--- Register student for course (imp 1.25 times). 
--- A record will be inserted in taken table. 
--- The time slot of the course offering will be checked with the courses already taken by the student. 
--- Prerequisites will also be checked.
-
 create or replace function count_credits(
     my_student_id varchar(10),
     curr_year integer,
@@ -90,8 +85,8 @@ declare
     i record;
     query_past_courses text;
 begin
-    query_past_courses := 'select * course_offering_' || given_year || '_' || given_semester || ' where offering_id = given_offering_id';
-    for i in execute query_past_courses
+    query_past_courses := 'select * from course_offering_' || given_year || '_' || given_semester || ' where offering_id = $1';
+    for i in execute query_past_courses using given_offering_id
     loop
         answer_course_id := i.course_id;
         return answer_course_id;
@@ -141,19 +136,28 @@ $$
 declare
     course_year integer;
     course_semester integer;
+    credit_course double precision;
+    course_name varchar(10);
 begin
-    select year, semester into course_year, course_semester
+    select year, semester, course_id into course_year, course_semester, course_name
     from course_offering
     where offering_id = request_offering_id;
 
+    select C into credit_course
+    from course_catalogue
+    where course_id = course_name;
+    raise notice '% %',course_name, credit_course;
+
     if decision then
         delete from register_student_requests where student_id = request_student_id and offering_id = request_offering_id;
-        EXECUTE 'INSERT INTO student_transcript_' || request_student_id || '(offering_id, year, semester) VALUES('|| request_offering_id ||', '|| course_year ||', '|| course_semester ||')';
+        EXECUTE 'INSERT INTO student_transcript_' || request_student_id || '(offering_id, year, semester, credits) VALUES('|| request_offering_id ||', '|| course_year ||', '|| course_semester ||', ' || credit_course')';
     else
         delete from register_student_requests where student_id = request_student_id and offering_id = request_offering_id;
     end if;
 end
 $$;
+
+-- call insert_record_student_transcript('1', 3, true);
 
 create or replace procedure register_student(
     my_student_id varchar(20),
@@ -185,6 +189,7 @@ declare
     queryx text;
     query_past_courses text;
     past_credits double precision;
+    course_name_check varchar(20);
 begin
 
     -- check if already registered
@@ -193,7 +198,7 @@ begin
     for i in execute queryx
     loop
 
-        course_check_id := offering_id_to_course_id(i.year, i.semester, i.offering_id);
+        execute 'select offering_id_to_course_id($1, $2, $3)' using i.year, i.semester, i.offering_id into course_check_id;
 
         if course_check_id = register_course_id then
             raise notice 'You are already registered in this course';
@@ -203,14 +208,19 @@ begin
     end loop;
 
     -- checking for prerequisites
-    for i in select prerequisite_course_id
+    for i in select *
              from prerequisites
              where course_id = register_course_id
     loop
 
-        select count(*) into completed
-        from student_transcript as s
-        where offering_id_to_course_id(s.year, s.semester, s.offering_id) = i.prerequisite_course_id and s.grade <> null;
+        completed := 0;
+        for j in execute queryx
+        loop
+            execute 'select offering_id_to_course_id($1, $2, $3)' using j.year, j.semester, j.offering_id into course_name_check;
+            if course_name_check = i.prerequisite_course_id then
+                completed := 1;
+            end if;
+        end loop;
 
         if completed = 0 then
             raise notice 'You are not eligible for this course. Course % not completed.', i.prerequisite_course_id;
@@ -305,8 +315,6 @@ begin
 end
 $$;
 
-call register_student('4', '1', 2020, 1, '1');
+-- call register_student('1', 'CS303', 2021, 1, '1');
 
 \copy time_slots FROM '/home/captain/Academic-Portal/time_slots.csv' delimiter ',' csv header;
-
--- call register_student('2019CS1067', 'CS301', 2000, 2, 'two');
