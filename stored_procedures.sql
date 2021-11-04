@@ -93,12 +93,12 @@ CREATE or REPLACE PROCEDURE get_CGPA(
     LANGUAGE plpgsql;
 
 
-create or replace function offer_course(cgpa_constraint_inp double precision, course_idd varchar(10), instructor_idd varchar(10), 
+create or replace PROCEDURE offer_course(cgpa_constraint_inp double precision, course_idd varchar(10), instructor_idd varchar(10), 
 year_inp integer,
 semester_inp integer,
 section_id_inp varchar(10),
 allowed_batches INT[],
-time_slots_avaiable TIME[]) RETURNS INTEGER
+time_slots_avaiable TIME[]) 
 AS
 $$
 declare 
@@ -150,7 +150,7 @@ begin
     time_slots.friday_start  = time_slots_avaiable[9] AND 
     time_slots.friday_end = time_slots_avaiable[10] ; 
 
-    raise notice 'Value: %', variable_name;
+    
 
     INSERT INTO course_offering(
         course_id, instructor_id, year, semester, section_id, slot_number, cgpa_requirement
@@ -175,8 +175,6 @@ begin
     for i in 1..array_length loop
         insert into allowed_batches_for_offering(offering_id,batch) values (offering_id, allowed_batches[i]);
     end loop;
-
-    RETURN 1;
 end;
 $$
 language plpgsql;
@@ -201,3 +199,40 @@ CALL delete_course_offering(1);
 
 
 \copy section_offered_grades FROM 'D:\Semester 5\CS 301 Database\Phase 1\section_offered_grades.csv' delimiter ',' csv header;
+
+
+
+course_offering_grades: This table is dynamically created for every course offering. It contains student_ids and grades of the students registered in this course. The instructor who is taking this course can edit this table.
+
+-- CREATE TABLE course_offering_grades_offering_id(
+--     student_id varchar(20) not null,
+--     grade integer,
+--     offering_id varchar(20) not null
+--     FOREIGN KEY (student_id) REFERENCES student(student_id),
+--     PRIMARY KEY (student_id)
+-- );
+
+create or replace PROCEDURE update_student_transcript()
+AS
+$$
+DECLARE 
+t_row course_offering%rowtype;
+i record;
+s1 varchar;
+s2 varchar;
+begin
+    -- find all the required tables 
+    -- get the student id
+    FOR t_row in SELECT * FROM course_offering loop
+        s1 = CONCAT('course_offering_grades_' , t_row.offering_id);
+        s2 = CONCAT('select ' ,'course_offering_grades_' , t_row.offering_id,'.','offering_id, ','course_offering_grades_' , t_row.offering_id,'.','student_id,','course_offering_grades_' , t_row.offering_id,'.','grade from course_offering_grades_' , t_row.offering_id);
+        for i in execute s2 LOOP
+            s2 = CONCAT('INSERT INTO ', 'student_transcript_',i.student_id,'(offering_id,year,semester,grade) VALUES (',i.offering_id,',',t_row.year,',',t_row.semester,',',i.grade,')');
+            execute s2;
+        END LOOP;
+    END LOOP;
+end;
+$$
+language plpgsql;
+
+call update_student_transcript();

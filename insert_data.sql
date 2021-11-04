@@ -52,3 +52,24 @@ insert into student(student_id, name, dept_name,batch) values ('2', 'Apurv Ratho
 insert into student(student_id, name, dept_name,batch) values ('3', 'Aman Chourasiya', 'CSE',2019);
 
 
+
+CREATE TABLE course_offering_grades_2(
+    student_id varchar(20) not null,
+    grade integer,
+    offering_id varchar(20) not null,
+    FOREIGN KEY (student_id) REFERENCES student(student_id),
+    PRIMARY KEY (student_id)
+);
+insert into course_offering_grades_2(student_id,grade,offering_id) values(1,10,2);
+
+
+
+ CREATE TABLE student_transcript_1(
+    offering_id integer not null,
+    year integer not null,
+    semester integer not null,
+    grade integer,
+    PRIMARY KEY (offering_id)
+);
+
+
