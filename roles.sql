@@ -1,5 +1,5 @@
-create ROLE student; 
-create ROLE faculty WITH 
+create ROLE student_role; 
+create ROLE batch_advisor_role WITH 
 	LOGIN 
 	NOSUPERUSER 
 	NOCREATEDB 
@@ -8,7 +8,7 @@ create ROLE faculty WITH
 	NOREPLICATION 
 	CONNECTION LIMIT -1;
 
-create ROLE faculty WITH   
+create ROLE faculty_role WITH   
 	LOGIN 
 	NOSUPERUSER 
 	NOCREATEDB 
@@ -17,7 +17,7 @@ create ROLE faculty WITH
 	NOREPLICATION 
 	CONNECTION LIMIT -1;
     
-create ROLE dean WITH   
+create ROLE dean_role WITH   
 	LOGIN 
 	NOSUPERUSER 
 	NOCREATEDB 
@@ -25,6 +25,16 @@ create ROLE dean WITH
 	INHERIT 
 	NOREPLICATION 
 	CONNECTION LIMIT -1;
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -65,11 +75,11 @@ GRANT SELECT, INSERT ON "student_transcript_student_id" to student_role;
 GRANT INSERT ON "instructor_ticket_table_inst_id" to student_role;
 
 
-GRANT USAGE ON SCHEMA project_schema TO student_role;
+-- GRANT USAGE ON SCHEMA project_schema TO student_role;
 -- GRANT SELECT ON TABLE course_offering_instid TO student_role;
 
 -- to do student_transcript
-ALTER DEFAULT PRIVILEGES IN SCHEMA project_schema GRANT SELECT ON TABLES TO student_role;
+-- ALTER DEFAULT PRIVILEGES IN SCHEMA project_schema GRANT SELECT ON TABLES TO student_role;
 
 
 --  dean 
@@ -93,13 +103,13 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON "student_ticket_table_student_id" to dea
 
 -- batch advisor
 GRANT CONNECT ON DATABASE project1 TO batch_advisor_role;
-GRANT USAGE, CREATE ON SCHEMA project_schema TO batch_advisor_role;
-GRANT SELECT ON TABLE course_catalogue, prerequisites, student, instructor, taken, student_transcript, course_offered_grades, TO batch_advisor_role;
+-- GRANT USAGE, CREATE ON SCHEMA project_schema TO batch_advisor_role;
+GRANT SELECT ON TABLE course_catalogue, prerequisites, student, instructor, taken, student_transcript, course_offered_grades TO batch_advisor_role;
 -- to do student_transcript
 -- SELECT ON TABLE course_offering_instid to batch_advisor_role;
 GRANT SELECT ON time_slots to batch_advisor_role;
 GRANT SELECT ON department to batch_advisor_role;
 GRANT INSERT ON dean_academics_ticket_table to batch_advisor_role;
 GRANT SELECT, UPDATE, INSERT, DELETE ON batch_advisor_ticket_table to batch_advisor_role;
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE ____ TO batch_advisor_role;
-ALTER DEFAULT PRIVILEGES IN SCHEMA project_schema GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO batch_advisor_role;
+-- GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE ____ TO batch_advisor_role;
+-- ALTER DEFAULT PRIVILEGES IN SCHEMA project_schema GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO batch_advisor_role;

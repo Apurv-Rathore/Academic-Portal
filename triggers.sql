@@ -85,3 +85,32 @@ CREATE TRIGGER trigger_instructor_ticket_table
     AFTER INSERT ON instructor
     FOR EACH ROW
     EXECUTE PROCEDURE create_instructor_ticket_table();
+
+
+
+
+
+CREATE or REPLACE FUNCTION create_instructor_ticket_table() 
+    RETURNS TRIGGER 
+    LANGUAGE PLPGSQL
+AS $$
+DECLARE
+    s1 varchar;
+BEGIN
+    s1 = CONCAT('CREATE TABLE IF NOT EXISTS instructor_ticket_table_', NEW.instructor_id, ' (student_id varchar(20) not null,
+                                                                                            offering_id integer not null,
+                                                                                            has_accepted_instructor boolean,
+                                                                                            recognized_by_batch_advisor boolean not null default false,
+                                                                                            PRIMARY KEY (student_id, offering_id),
+                                                                                            FOREIGN KEY (student_id) REFERENCES student(student_id),
+                                                                                            FOREIGN KEY (offering_id) REFERENCES course_offering(offering_id)
+                                                                                            )');
+    EXECUTE s1;
+RETURN NULL;
+END;
+$$;
+
+CREATE TRIGGER trigger_insert_student_in_course_offering_grades
+    AFTER INSERT ON instructor
+    FOR EACH ROW
+    EXECUTE PROCEDURE create_instructor_ticket_table();

@@ -202,7 +202,7 @@ CALL delete_course_offering(1);
 
 
 
-course_offering_grades: This table is dynamically created for every course offering. It contains student_ids and grades of the students registered in this course. The instructor who is taking this course can edit this table.
+-- course_offering_grades: This table is dynamically created for every course offering. It contains student_ids and grades of the students registered in this course. The instructor who is taking this course can edit this table.
 
 -- CREATE TABLE course_offering_grades_offering_id(
 --     student_id varchar(20) not null,
