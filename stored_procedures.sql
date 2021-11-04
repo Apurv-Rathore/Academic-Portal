@@ -433,7 +433,7 @@ begin
             program_core_credit_comp = program_core_credit_comp + p1;
         end if;
 
-        c2 = 0;
+        c1 = 0;
         p1 = 0;
         call is_it_science_core(which_course,c1);
         if c1=1 then 
@@ -441,7 +441,7 @@ begin
             science_core_credit_comp = science_core_credit_comp + p1;
         end if;
 
-        c3 = 0;
+        c1 = 0;
         p1 = 0;
         call is_it_open(which_course,c1);
         if c1=1 then 
@@ -450,7 +450,7 @@ begin
             -- raise notice 'Value of p1: %', p1;
         end if;
 
-        c4 = 0;
+        c1 = 0;
         p1 = 0;
         call is_it_program(which_course,c1);
         if c1=1 then 
