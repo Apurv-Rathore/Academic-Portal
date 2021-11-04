@@ -69,6 +69,7 @@ insert into course_offering_grades_2(student_id,grade,offering_id) values(1,10,2
     year integer not null,
     semester integer not null,
     grade integer,
+     credits double precision not null,
     PRIMARY KEY (offering_id)
 );
 
