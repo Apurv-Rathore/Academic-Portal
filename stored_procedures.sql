@@ -235,4 +235,22 @@ end;
 $$
 language plpgsql;
 
-call update_student_transcript();
+-- call update_student_transcript();
+
+create or replace PROCEDURE update_course_catalogue(
+course_id_inp varchar(20),
+name_inp varchar(20),
+l_inp integer,
+t_inp integer,
+p_inp integer,
+s_inp integer,
+c_inp integer
+) AS 
+$$
+begin
+insert into course_catalogue(course_id, name, L, T, P, S, C) values (course_id_inp,name_inp,l_inp,t_inp,p_inp,s_inp,c_inp);
+end;
+$$
+language plpgsql;
+
+-- call update_course_catalogue('CS101','Introduction to Programming',1,1,1,1,1);
