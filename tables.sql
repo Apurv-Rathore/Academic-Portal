@@ -128,7 +128,7 @@ CREATE TABLE dean_academics_ticket_table(
     FOREIGN KEY (student_id) REFERENCES student(student_id)
 );
 
-CREATE TABLE program_cores(
+CREATE TABLE program_core(
     course_id varchar(20) not null,
     department varchar(20) not null,
     batch integer,
