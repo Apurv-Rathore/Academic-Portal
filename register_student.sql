@@ -150,7 +150,7 @@ begin
 
     if decision then
         delete from register_student_requests where student_id = request_student_id and offering_id = request_offering_id;
-        EXECUTE 'INSERT INTO student_transcript_' || request_student_id || '(offering_id, year, semester, credits) VALUES('|| request_offering_id ||', '|| course_year ||', '|| course_semester ||', ' || credit_course')';
+        EXECUTE 'INSERT INTO student_transcript_' || request_student_id || '(offering_id, year, semester, credits) VALUES($1, $2, $3, $4)' using  request_offering_id, course_year, course_semester, credit_course;
     else
         delete from register_student_requests where student_id = request_student_id and offering_id = request_offering_id;
     end if;
