@@ -227,7 +227,10 @@ begin
         s1 = CONCAT('course_offering_grades_' , t_row.offering_id);
         s2 = CONCAT('select ' ,'course_offering_grades_' , t_row.offering_id,'.','offering_id, ','course_offering_grades_' , t_row.offering_id,'.','student_id,','course_offering_grades_' , t_row.offering_id,'.','grade from course_offering_grades_' , t_row.offering_id);
         for i in execute s2 LOOP
-            s2 = CONCAT('INSERT INTO ', 'student_transcript_',i.student_id,'(offering_id,year,semester,grade) VALUES (',i.offering_id,',',t_row.year,',',t_row.semester,',',i.grade,')');
+            s2 = CONCAT('UPDATE ', 'student_transcript_',i.student_id,' SET grade=',i.grade,' WHERE offering_id=',i.offering_id);
+
+
+            -- s2 = CONCAT('INSERT INTO ', 'student_transcript_',i.student_id,'(offering_id,year,semester,grade) VALUES (',i.offering_id,',',t_row.year,',',t_row.semester,',',i.grade,')');
             execute s2;
         END LOOP;
     END LOOP;
@@ -235,7 +238,7 @@ end;
 $$
 language plpgsql;
 
--- call update_student_transcript();
+call update_student_transcript();
 
 create or replace PROCEDURE update_course_catalogue(
 course_id_inp varchar(20),
