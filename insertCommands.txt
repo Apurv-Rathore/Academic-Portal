@@ -9,3 +9,41 @@ insert into course_offering(course_id, year, semester, section_id, instructor_id
 values ('CS301', 2000, 2, 'two', 'VSCS301', 'dekh lo', 8.2, 3);
 insert into time_slots(monday_start, monday_end, tuesday_start, tuesday_end, wednesday_start, wednesday_end, thursday_start, thursday_end, friday_start, friday_end) values ('16:00', '17:00', '10:20', '11:20', '9:00', '10:00', '14:45', '15:20', '8:00', '8:30');
 insert into taken(offering_id, student_id) values (3, '2019CS1067');
+
+
+CREATE TABLE program_elective_2021(
+  course_id varchar(20) not null,
+  department varchar(20) not null,
+  PRIMARY KEY(course_id) 
+);
+insert into program_elective_2021(course_id, department) values    ('CS302','cse');
+
+
+CREATE TABLE program_core_elective_2021(
+  course_id varchar(20) not null,
+  department varchar(20) not null,
+  PRIMARY KEY(course_id) 
+);
+insert into program_core_elective_2021(course_id, department) values    ('CS302','cse');
+
+
+
+
+CREATE TABLE science_core_elective_2021(
+  course_id varchar(20) not null,
+  department varchar(20) not null,
+  PRIMARY KEY(course_id) 
+);
+insert into science_core_elective_2021(course_id, department) values    ('CS302','cse');
+
+
+CREATE TABLE open_elective_2021(
+  course_id varchar(20) not null,
+  department varchar(20) not null,
+  PRIMARY KEY(course_id) 
+);
+insert into open_elective_2021(course_id, department) values    ('CS302','cse');
+
+
+
+insert into credit_requirement_to_graduate(batch,program_core_credit,science_core_credit,open_elective_credit,program_elective_credit) values(2019,1,1,1,1);

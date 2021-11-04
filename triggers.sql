@@ -10,6 +10,7 @@ BEGIN
                                                                         year integer not null,
                                                                         semester integer not null,
                                                                         grade integer,
+                                                                        credits double precision,
                                                                         PRIMARY KEY (offering_id)
                                                                         )');
     execute s1;
