@@ -73,4 +73,20 @@ insert into course_offering_grades_2(student_id,grade,offering_id) values(1,10,2
     PRIMARY KEY (offering_id)
 );
 
+insert into course_offering_2020_2(
+    offering_id,
+    course_id,
+    section_id,
+    instructor_id,
+    cgpa_requirement,
+    allowed_batches
+) values (5, 'CS201', '2', '1', 5, ARRAY[2018, 2019, 2020]);
+
+insert into student_transcript_1(
+    offering_id,
+    year,
+    semester,
+    grade,
+    credits
+) values (5, 2020, 2, 8, 3);
 

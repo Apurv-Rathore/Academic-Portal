@@ -95,7 +95,6 @@ CREATE TABLE register_student_requests(
 CREATE TABLE course_offering_grades_offering_id(
     student_id varchar(20) not null,
     grade integer,
-    offering_id varchar(20) not null,
     FOREIGN KEY (student_id) REFERENCES student(student_id),
     PRIMARY KEY (student_id)
 );
