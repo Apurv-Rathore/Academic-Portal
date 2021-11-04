@@ -81,7 +81,15 @@ CREATE TABLE student_transcript_student_id(
     year integer not null,
     semester integer not null,
     grade integer,
+    credits double precision,
     PRIMARY KEY (offering_id)
+);
+
+CREATE TABLE register_student_requests(
+    student_id varchar(20) not null,
+    offering_id integer not null,
+    approve boolean default false,
+    PRIMARY KEY (student_id, offering_id)
 );
 
 CREATE TABLE course_offering_grades_offering_id(
