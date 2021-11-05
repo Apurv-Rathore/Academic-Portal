@@ -63,7 +63,6 @@ CREATE TABLE course_offering(
     cgpa_requirement double precision,
     allowed_batches integer [] not null,
     FOREIGN KEY (course_id) REFERENCES course_catalogue(course_id),
-    FOREIGN KEY (slot_number) REFERENCES time_slots(slot_number)
 );
 
 CREATE TABLE student_transcript_student_id(
